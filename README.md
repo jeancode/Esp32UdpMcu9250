@@ -28,3 +28,34 @@ Este proyecto implementa un cliente UDP en un ESP32 para recopilar datos del sen
   - [`WiFiUdp`](https://www.arduino.cc/en/Reference/WiFiUDP)
 
 
+# Notas sobre el Código UDP y TCP con Node.js
+
+Este código implementa un servidor UDP y un servidor TCP utilizando Node.js, con la capacidad de recibir mensajes UDP y reenviarlos a los clientes conectados al servidor TCP.
+
+## Descripción del Código
+
+### Módulos Utilizados
+
+- `dgram`: Proporciona funcionalidades para trabajar con sockets UDP.
+- `net`: Permite crear servidores y clientes TCP.
+
+### Servidor UDP
+
+#### Funcionalidad:
+- **Creación de un socket UDP:** El servidor UDP es creado con `dgram.createSocket('udp4')`.
+- **Eventos principales:**
+  - `listening`: Se dispara cuando el servidor está listo y escuchando conexiones.
+  - `message`: Se activa al recibir un mensaje UDP.
+  - `error`: Maneja errores ocurridos en el servidor UDP.
+
+#### Código Clave:
+```javascript
+const server = dgram.createSocket('udp4');
+server.on('listening', () => {
+    const address = server.address();
+    console.log(`Servidor UDP escuchando en ${address.address}:${address.port}`);
+});
+server.on('message', (msg, rinfo) => {
+    console.log(msg.toString());
+});
+server.bind(50);
